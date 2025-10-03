@@ -1,0 +1,79 @@
+Contactor Control specification
+
+1. With precharge circuit
+
+The aim of the precharge circuit is to align the load voltage (usually an inverter) with the battery pack voltage by energizing the inverter from the battery.
+By convention, the precharge circuit is on the positive side of the pack.
+  
+a. Closing Sequence:
+The BMS when receiving a request to close the contactors, should check the following:
+- Make sure the contactors are open.
+- No critical fault (tbd).
+
+In this configuration, the BMS should first close the negative contactor followed by the precharge contactor (at next tick) in a sequential order.
+Once the link voltage is equal to the pack voltage (~5V difference), close the positive contactor and open the precharge contactor, in a sequential order by keeping the even a tick apart.
+If the link voltage does not reach the pack voltage within Dt_prechgTimeOut (20s default), a timeout error should be thrown and the closing sequence should be stopped.
+
+b. Opening Sequence:
+When receiving the opening request, the BMS should wait for the current to be lower than minCurrentOpenThr (default 5A) before opening all the contactors simultaneously.
+If the current has not been decreased after a certain amount of time Dt_loCurrentTimeout (default 30s) then open the contactors anyway.
+
+c. Error opening:
+When receiving a critical error from limit violation (cell voltage and temperature violation), open all the contactors immediately.
+When receiving a mild error from limit violation, open all the contactors after a delay (10s - calibration). This will allow the power and current limits to ramp down to 0W/0A before opening the contactors.
+
+2. Without precharge circuit (draft)
+In some applications, the precharge circuit is located on the inverter side. The inverter then precharge itself to reach the pack voltage.
+
+a. Closing Sequence:
+When the BMS receives a request to close the contactors, it should check the following:
+- Make sure the contactors are open.
+- No critical fault (tbd).
+
+Then the BMS shall close both the negative and positive to expose the terminal voltage of the battery to the inverter. The inverter will then align its own voltage internally.
+
+b. Opening Sequence:
+When receiving the the opening request, the BMS should wait for the current to be lower than minCurrentOpenThr (default 5A) before opening all the contactors simultaneously.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TESTING
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+a. Closing sequence - precharge timeout:
+Make sure there are no fault.
+Connect a power supply to the link voltage, set the voltage of the power supply to 0V.
+Send a connection request to the BMS over CAN.
+-> Observe: the negative and the precharge contactors should close.
+-> Observe: after Dt_prechgTimeOut seconds, all the contactors should open and the BMS should throw a precharge timeout error on CAN.
+
+b. Closing sequence - Normal:
+Make sure there are no fault.
+Connect a power supply to the link voltage, set the voltage of the power supply to the same level as the link voltage.
+Send a connection request to the BMS over CAN.
+-> Observe: the negative and the positive contactors should close, while the precharge is open.
+
+c. Opening sequence - Normal:
+Make sure the contactors are closed.
+Send a disconnection request to the BMS on CAN.
+-> Observe: all the contactors should be open.
+
+d. Critical error - No closing:
+Make sure the contactors are open and there are no faults.
+Fake a cell over-voltage by changing the maximum critical voltage threshold (from 3.8V to 3.2V for instance). This should trigger a critical limit violation fault.
+Send a connection request to the BMS over CAN.
+-> Observe: none of the contactors should close and that the BMS stays in error.
+
+e. Critical error - Opening:
+Make sure that contactors are closed.
+Fake a cell over-voltage by changing the maximum critical voltage threshold (from 3.8V to 3.2V for instance). This should trigger a critical limit violation fault.
+-> Observe: all the contactors should open immediately and the BMS should go to error.
+
+f. Opening sequence under load:
+Make sure the contactors are closed. Use the power supply to charge or discharge the battery with more than minCurrentOpenThr A (e.g. 6A).
+Note: Dont set a too high current as it can damage the contactors!
+Send a disconnection request to the BMS on CAN.
+-> Observe: all the contactors should open after Dt_loCurrentTimeout (20s) and the BMS should throw a disconnection timeout.
+
+
+

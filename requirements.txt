@@ -1,0 +1,5 @@
+mkdocs>=1.6.1
+mkdocs-material>=9.5.0
+mkdocs-charts-plugin
+mkdocs-exclude
+mkdocs-awesome-pages-plugin

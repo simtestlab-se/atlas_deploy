@@ -1,0 +1,59 @@
+/* Make the site title bolder */
+/* Make navigation text stronger */
+.md-nav__item--active > .md-nav__link {
+	font-weight: 900;
+	color: #1a237e;
+	background: linear-gradient(90deg, #e3e6f5 0%, #f5f7fa 100%);
+	border-radius: 4px;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+}
+.md-nav__link, .md-nav__item .md-nav__link {
+	color: #150f69;
+	text-shadow: 0 1px 2px rgba(0,0,0,0.08);
+}
+
+.md-nav__link:hover, .md-nav__item .md-nav__link:hover {
+	color: #0078d4;
+	text-decoration: underline;
+}
+.md-content h1 {
+  font-weight: bold;
+  font-size: 2rem;
+  background-color: #bedaf0;
+  padding: 0.3em 0.6em;
+  border-radius: 6px;
+}
+
+.md-status::before {
+  content: "";
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 50%;
+  margin-right: 0.5em;
+  vertical-align: middle;
+}
+
+/* Specific colors based on status */
+.md-status[data-md-status="approved"]::before {
+  background-color: #4CAF50; /* green */
+}
+
+.md-status[data-md-status="review"]::before {
+  background-color: #F44336; /* red */
+}
+
+.md-status[data-md-status="draft"]::before {
+  background-color: #2196F3; /* blue */
+}
+
+
+.mermaid {
+    transform: scaleX(1.25);  /* zoom horizontally */
+     transform-origin: top left;
+    min-width: 1500px;  /* adjust to timeline length */
+
+}
+.mermaid-wrapper {
+    overflow-x: auto;
+}

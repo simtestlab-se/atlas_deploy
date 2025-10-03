@@ -1,0 +1,26 @@
+# Build artifacts
+*.o
+*.exe
+*.dll
+*.lib
+*.a
+
+# Temporary files
+*.tmp
+*.bak
+*~
+.*.swp
+.*.swo
+
+# IDE files
+.vscode/
+.vs/
+*.vcxproj.user
+
+# Test outputs
+test_output.txt
+*.log
+
+# OS specific
+.DS_Store
+Thumbs.db

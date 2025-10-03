@@ -1,0 +1,122 @@
+name: Deploy MkDocs to AWS EC2
+
+on:
+  push:
+    branches: [ main, master,    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.ORG_TOKEN }}
+        submodules: recursiveubmodules-added ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.ORG_TOKEN }}
+        submodules: recursive
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Build MkDocs site
+      run: |
+        mkdocs build --strict --verbose
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: mkdocs-site
+        path: site/
+        retention-days: 30
+
+    - name: Deploy to EC2
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/mkdocs-enabled-submodules-added'
+      env:
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+        EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+        EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+        DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+      run: |
+        # Install SSH client
+        sudo apt-get update
+        sudo apt-get install -y openssh-client rsync
+        
+        # Setup SSH key
+        mkdir -p ~/.ssh
+        echo "$EC2_SSH_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+        
+        # Create deployment directory on EC2 if it doesn't exist
+        ssh -i ~/.ssh/id_rsa $EC2_USERNAME@$EC2_HOST "sudo mkdir -p $DEPLOY_PATH && sudo chown $EC2_USERNAME:$EC2_USERNAME $DEPLOY_PATH"
+        
+        # Deploy files using rsync
+        rsync -avz --delete -e "ssh -i ~/.ssh/id_rsa" ./site/ $EC2_USERNAME@$EC2_HOST:$DEPLOY_PATH/
+        
+        # Restart nginx (optional - uncomment if needed)
+        # ssh -i ~/.ssh/id_rsa $EC2_USERNAME@$EC2_HOST "sudo systemctl restart nginx"
+        
+        echo "Deployment completed successfully!"
+
+  test-build:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: false
+        
+    - name: Handle submodules for test build
+      run: |
+        git submodule sync --recursive || true
+        git submodule update --init --recursive || echo "Warning: Some submodules failed to initialize"
+        
+        # Create placeholder if bms_software submodule is missing
+        if [ ! -d "simtestlab/bms_software" ] || [ ! "$(ls -A simtestlab/bms_software 2>/dev/null)" ]; then
+          echo "Creating placeholder for missing bms_software submodule"
+          mkdir -p simtestlab/bms_software/docs
+          echo "# BMS Software Documentation" > simtestlab/bms_software/docs/index.md
+          echo "This section is under development." >> simtestlab/bms_software/docs/index.md
+        fi
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Test MkDocs build
+      run: |
+        mkdocs build --strict --verbose
+        
+    - name: Check for broken links (optional)
+      run: |
+        # Install linkchecker if you want to validate links
+        # pip install linkchecker
+        # mkdocs serve --dev-addr=0.0.0.0:8000 &
+        # sleep 10
+        # linkchecker http://localhost:8000
+        echo "Build test completed successfully!"

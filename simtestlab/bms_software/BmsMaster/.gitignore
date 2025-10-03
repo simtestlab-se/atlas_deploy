@@ -1,0 +1,10 @@
+
+# DAVE/Eclipse output
+/Debug/
+/Release/
+/build/
+
+# IDEs
+.vscode/
+.idea/
+
