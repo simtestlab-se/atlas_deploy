@@ -1,0 +1,142 @@
+VERSION ""
+
+NS_ :
+    NS_DESC_
+    CM_
+    BA_DEF_
+    BA_
+    VAL_
+    CAT_DEF_
+    CAT_
+    FILTER
+    BA_DEF_DEF_
+    EV_DATA_
+    ENVVAR_DATA_
+    SGTYPE_
+    SGTYPE_VAL_
+    BA_DEF_SGTYPE_
+    BA_SGTYPE_
+    SIG_TYPE_REF_
+    VAL_TABLE_
+    SIG_GROUP_
+    SIG_VALTYPE_
+    SIGTYPE_VALTYPE_
+    BO_TX_BU_
+    BA_DEF_REL_
+    BA_REL_
+    BA_DEF_DEF_REL_
+    BU_SG_REL_
+    BU_EV_REL_
+    BU_BO_REL_
+    SG_MUL_VAL_
+
+BS_:
+
+BU_:
+
+
+BO_ 100 Cell_Voltage_1_4: 8 Vector__XXX
+ SG_ Cell01_Voltage : 0|16@1+ (0.00015,1.5) [1|4.2] "V" Vector__XXX
+ SG_ Cell02_Voltage : 16|16@1+ (0.00015,1.5) [1|4.2] "V" Vector__XXX
+ SG_ Cell03_Voltage : 32|16@1+ (0.00015,1.5) [1|4.2] "V" Vector__XXX
+ SG_ Cell04_Voltage : 48|16@1+ (0.00015,1.5) [1|4.2] "V" Vector__XXX
+
+BO_ 101 Cell_Voltage_5_8: 8 Vector__XXX
+ SG_ Cell05_Voltage : 0|16@1+ (0.00015,1.5) [1|4.2] "V" Vector__XXX
+ SG_ Cell06_Voltage : 16|16@1+ (0.00015,1.5) [1|4.2] "V" Vector__XXX
+ SG_ Cell07_Voltage : 32|16@1+ (0.00015,1.5) [1|4.2] "V" Vector__XXX
+ SG_ Cell08_Voltage : 48|16@1+ (0.00015,1.5) [1|4.2] "V" Vector__XXX
+
+BO_ 102 Cell_Voltage_9_12: 8 Vector__XXX
+ SG_ Cell09_Voltage : 0|16@1+ (0.00015,1.5) [1|4.2] "V" Vector__XXX
+ SG_ Cell10_Voltage : 16|16@1+ (0.00015,1.5) [1|4.2] "V" Vector__XXX
+ SG_ Cell11_Voltage : 32|16@1+ (0.00015,1.5) [1|4.2] "V" Vector__XXX
+ SG_ Cell12_Voltage : 48|16@1+ (0.00015,1.5) [1|4.2] "V" Vector__XXX
+
+
+BO_ 103 GPIO_1_4: 8 Vector__XXX
+ SG_ GPIO01 : 0|16@1+ (0.00015,1.5) [0|65535] "" Vector__XXX
+ SG_ GPIO02 : 16|16@1+ (0.00015,1.5) [0|65535] "" Vector__XXX
+ SG_ GPIO03 : 32|16@1+ (0.00015,1.5) [0|65535] "" Vector__XXX
+ SG_ GPIO04 : 48|16@1+ (0.00015,1.5) [0|65535] "" Vector__XXX
+
+BO_ 104 GPIO_5_8: 8 Vector__XXX
+ SG_ GPIO05 : 0|16@1+ (0.00015,1.5) [0|65535] "" Vector__XXX
+ SG_ GPIO06 : 16|16@1+ (0.00015,1.5) [0|65535] "" Vector__XXX
+ SG_ GPIO07 : 32|16@1+ (0.00015,1.5) [0|65535] "" Vector__XXX
+ SG_ GPIO08 : 48|16@1+ (0.00015,1.5) [0|65535] "" Vector__XXX
+
+BO_ 105 GPIO_9_10: 8 Vector__XXX
+ SG_ GPIO09 : 0|16@1+ (0.00015,1.5) [0|65535] "" Vector__XXX
+ SG_ GPIO10 : 16|16@1+ (0.00015,1.5) [0|65535] "" Vector__XXX
+
+
+
+BO_ 106 SOC_Cell01: 2 Vector__XXX
+ SG_ SOC_Cell01 : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+BO_ 107 SOC_Cell02: 2 Vector__XXX
+ SG_ SOC_Cell02 : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+BO_ 108 SOC_Cell03: 2 Vector__XXX
+ SG_ SOC_Cell03 : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+BO_ 109 SOC_Cell04: 2 Vector__XXX
+ SG_ SOC_Cell04 : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+BO_ 110 SOC_Cell05: 2 Vector__XXX
+ SG_ SOC_Cell05 : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+BO_ 111 SOC_Cell06: 2 Vector__XXX
+ SG_ SOC_Cell06 : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+BO_ 112 SOC_Cell07: 2 Vector__XXX
+ SG_ SOC_Cell07 : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+BO_ 113 SOC_Cell08: 2 Vector__XXX
+ SG_ SOC_Cell08 : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+BO_ 114 SOC_Cell09: 2 Vector__XXX
+ SG_ SOC_Cell09 : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+BO_ 115 SOC_Cell10: 2 Vector__XXX
+ SG_ SOC_Cell10 : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+BO_ 116 SOC_Cell11: 2 Vector__XXX
+ SG_ SOC_Cell11 : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+BO_ 117 SOC_Cell12: 2 Vector__XXX
+ SG_ SOC_Cell12 : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+
+BO_ 118 Pack_Voltage: 2 Vector__XXX
+ SG_ Pack_Voltage : 0|16@1+ (0.1,0) [0|1000] "V" Vector__XXX
+
+BO_ 119 Pack_Current: 2 Vector__XXX
+ SG_ Pack_Current : 0|16@1+ (0.1,0) [-1000|1000] "A" Vector__XXX
+
+BO_ 120 Link_Voltage: 2 Vector__XXX
+ SG_ Link_Voltage : 0|16@1+ (0.1,0) [0|1000] "V" Vector__XXX
+
+BO_ 121 Avg_Cell_Temperature: 2 Vector__XXX
+ SG_ Avg_Cell_Temperature : 0|16@1+ (0.1,0) [-50|150] "°C" Vector__XXX
+
+
+BO_ 122 Pack_SOC_Min: 2 Vector__XXX
+ SG_ Pack_SOC_Min : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+BO_ 123 Pack_SOC_Max: 2 Vector__XXX
+ SG_ Pack_SOC_Max : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+BO_ 124 Pack_SOC_Avg: 2 Vector__XXX
+ SG_ Pack_SOC_Avg : 0|16@1+ (0.1,0) [0|100] "%" Vector__XXX
+
+
+BO_ 125 Contactor_Positive: 1 Vector__XXX
+ SG_ Contactor_Positive_Status : 0|8@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 126 Contactor_Negative: 1 Vector__XXX
+ SG_ Contactor_Negative_Status : 0|8@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 127 Contactor_Precharge: 1 Vector__XXX
+ SG_ Precharge_Status : 0|8@1+ (1,0) [0|1] "" Vector__XXX

@@ -1,0 +1,11 @@
+Current integrator
+
+Input: 
+Current fast filtered
+
+Output:
+Integrated current
+
+This function will run at 50ms and will integrate current at a faster rate to avoid missing current variations dynamics.
+This basic function will return an integrated current:
+Int_current = Int_current + (I_fast(k).∆T)

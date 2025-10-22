@@ -1,0 +1,26 @@
+The BMS inputs need to be filtered in different ways for different functions.
+Calibration parameter:
+N_slo = 10
+N_fast = 5
+
+Slow inputs
+For the slow state of charge (SOC) function that runs at 200ms, the current, cell voltage and cell temperature need to be filtered accordingly.
+A simple low pass filter (FIR) is used for that purpose:
+Current_(filt-slo) (k)=  (I(k)+I(k-1)+I(k-2)+⋯+I(k-N-1))/(N_slo)
+I(k) is the current measured at high frequency from the shunt.
+
+cellVolt_(filt-slo) (k)=  (cellV(k)+cellV(k-1)+cellV(k-2)+⋯+cellV(k-N-1))/(N_slo)
+cellV(k) is the cell voltage measured at high frequency from the AFE board.
+The same applied to the temperature measurement.
+
+Fast inputs
+For the faster state of power (SOP) function that runs at 100ms, the current, cell voltage and cell temperature need to be filtered accordingly.
+A simple low pass filter (FIR) is used for that purpose:
+Current_(filt-fast) (k)=  (I(k)+I(k-1)+I(k-2)+⋯+I(k-N-1))/(N_fast)
+I(k) is the current measured at high frequency from the shunt.
+
+cellVolt_(filt-fast) (k)=  (cellV(k)+cellV(k-1)+cellV(k-2)+⋯+cellV(k-N-1))/(N_fast)
+cellV(k) is the cell voltage measured at high frequency from the AFE board.
+The same applied to the temperature measurement.
+
+Whenever a function uses current & voltage, it is very important to consistently pick either slow or fast filtering but never mix them. The reason for this is that current and voltage measurements must be synchronized.

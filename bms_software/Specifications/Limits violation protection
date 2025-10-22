@@ -1,0 +1,53 @@
+Limits violation protection
+
+The BMS shall detect any violation on any cell of the pack and react as fast as possible to protect the batteries.
+The BMS shall have a strong focus and monitor the cell voltages and temperatures at any given time and be able to reach by either opening the contactor and/or reducing the power limits.
+
+Inputs:
+cell voltage fast filtered
+cell temperature fast filtered
+
+Outputs:
+Contactor Immediate Opening Request
+Critical error flag
+
+Parameters:
+V_crit_min, V_crit_max (2.3V - 3.8V)
+T_crit_min, T_crit_max (0, 45 degC)
+
+1. Cell voltage limits:
+a. If any of the cell voltage (fast filtered) goes above V_crit_max, the BMS shall immediately open all the contactors. Then the BMS shall throw a critical error.
+b. If any of the cell voltage (fast filtered) goes below V_crit_min, the BMS shall immediately open all the contactors. Then the BMS shall throw a critical error.
+
+2. Cell temperature limits:
+a. If any of the cell temperature (fast filtered) goes above T_crit_max, the BMS shall immediately open all the contactors. Then the BMS shall throw a critical error.
+b. If any of the cell temperature (fast filtered) goes below T_crit_min, the BMS shall immediately open all the contactors. Then the BMS shall throw a critical error.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TESTING
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Testing cell limit violations implies testing the function with fake limits in order not to damage the cells.
+
+1. Voltage limits:
+
+a. High limit:
+Bring the cell voltage to 3-3.2V for example.
+Set the parameters V_crit_max to 3.5V.
+Charge the cell until it reaches 3.5V (safe).
+Note: make sure the current is low (<10A) when crossing the new V_crit_max V in order to avoid damaging the contactors.
+-> Observe: The contactors should open immediately upon crossing V_crit_max.
+
+b. Low limit:
+Bring the cell voltage to 3-3.2V for example.
+Set the parameters V_crit_min to 2.9V.
+Discharge the cell until it crosses 2.9V (safe).
+Note: make sure the current is low (<10A) when crossing the new V_crit_min V in order to avoid damaging the contactors.
+-> Observe: The contactors should open immediately upon crossing V_crit_min.
+
+2. Temperature limits:
+Apply the same principle as above: change the T_crit_min and T_crit_max limits to values as close as possible to the actual cell temperature value.
+Play with the temperature sensor itself (NTC) to trigger a critical error for both min and max temperature limits.
+-> Observe: In both case the contactors should open immediately upon crossing T_crit_min and T_crit_max.
+
