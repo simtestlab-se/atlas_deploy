@@ -58,3 +58,28 @@ jobs:
           publish_branch: gh-pages
           user_name: 'github-actions[bot]'
           user_email: '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Confirm gh-pages branch exists on remote
+        run: |
+          echo "Remote gh-pages refs:";
+          git ls-remote origin refs/heads/gh-pages || true
+
+      - name: Query GitHub Pages API for site status and URL
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Pages API response for ${GITHUB_REPOSITORY}:";
+          curl -s -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages" | python -m json.tool || true
+
+      - name: HEAD request to Pages site (if available)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Try to read html_url from Pages API and run a HEAD request
+          html_url=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages" | python -c "import sys, json; d=json.load(sys.stdin); print(d.get('html_url',''))") || true
+          if [ -z "$html_url" ]; then
+            echo "No html_url returned from Pages API; skipping HTTP check.";
+            exit 0;
+          fi
+          echo "Checking $html_url";
+          curl -s -I "$html_url" | sed -n '1,20p' || true
