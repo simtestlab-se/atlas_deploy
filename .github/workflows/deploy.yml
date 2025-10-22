@@ -40,7 +40,7 @@ jobs:
       # 🚀 Step 5: Deploy to GitHub Pages using personal token
       - name: Deploy to GitHub Pages
         env:
-          GITHUB_TOKEN: ${{ secrets.atlas_token }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         run: |
           echo "Deploying to GitHub Pages..."
           git config --global user.name "github-actions[bot]"
