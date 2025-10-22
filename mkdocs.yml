@@ -4,36 +4,48 @@ site_description: Complete documentation for simtestlab
 docs_dir: simtestlab
 nav:
   - Home: index.md
-  - Blog:
-      - blog/index.md
-  - Project Manager: ProjectManagement/ProjectManager.md
+  - Help: help.md
+  - GitHub Issues:
+      - Overview: github_issues/overview/index.md
+      - Repositories:
+          - atlas: github_issues/repositories/atlas/index.md
+          - bms_app: github_issues/repositories/bms_app/index.md
+  - Project Manager: 
+      - ... | ProjectManagement/**
   - BMS Application:
-      - bms_software/docs/index.md
-      - ... | bms_software/docs/**
+      - ... | SoftwareSpecifiactions/ApplicationSoftware/**
+  - System Engineering: 
+      - ... | System Engineering/**
 theme:
   name: material
   custom_dir: simtestlab/custom_theme
   font:
     text: Merriweather Sans
-    code: Red Hat Mono
+    code: "Fira Code, Menlo, Monaco, Consolas, monospace"
   logo: assets/logo.png
   favicon: assets/favicon.ico
   features:
     - navigation.footer
+    - navigation.tabs
+    - navigation.top
+    - content.tabs.link
+    - content.code.copy
+    - content.tooltips
+    - content.grid 
   palette:
     # Dark Mode
     - scheme: slate
       toggle:
         icon: material/weather-sunny
         name: Dark mode
-      primary: green
+      primary: grey
       accent: deep purple
     # Light Mode
     - scheme: default
       toggle:
         icon: material/weather-night
         name: Light mode
-      primary: blue
+      primary: grey
       accent: deep orange
 
 markdown_extensions:
@@ -83,6 +95,9 @@ extra_javascript:
   - https://cdn.jsdelivr.net/npm/vega-embed@6
   - https://unpkg.com/mermaid@10.9.1/dist/mermaid.min.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js
+  - javascripts/github-filters.js
+
 
 
 plugins:
@@ -90,14 +105,31 @@ plugins:
   - awesome-pages
   - blog
   - charts
+  - plantuml:
+      puml_url: https://www.plantuml.com/plantuml/
+# Temporarily disabled due to multiprocessing issues
+#  - git-authors:
+#      show_contribution: true
+#  - git-revision-date-localized:
+#      type: datetime
+#      fallback_to_build_date: true
 
 copyright: Copyright &copy; 2020-2025 by Simtestlab Sweden AB
 
 extra:
   generator: false
-  comments: true
+  comments: false
   status:
     draft: In draft
     review: In review
     approved: Approved
     deprecated: Deprecated
+  icons:
+    header:
+      - icon: material/help-circle
+        link: help/
+        name: Help
+
+extra_css:
+  - styles/extra.css
+

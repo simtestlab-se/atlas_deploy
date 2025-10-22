@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="time-clocks">
+  <div style="text-align: center;">
+    <div style="font-weight: bold; margin-bottom: 5px;">Sweden</div>
+    <div id="sweden-time" style="font-size: 16px;">Loading...</div>
+  </div>
+  <div style="text-align: center;">
+    <div style="font-weight: bold; margin-bottom: 5px;">India</div>
+    <div id="india-time" style="font-size: 16px;">Loading...</div>
+  </div>
+</div>
+  {{ super() }}
+  {% include "partials/comments.html" %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+function updateTime() {
+  const now = new Date();
+  
+  // Sweden (Göteborg) - Europe/Stockholm
+  const swedenTime = now.toLocaleTimeString('en-US', { timeZone: 'Europe/Stockholm', hour12: true });
+  document.getElementById('sweden-time').textContent = swedenTime;
+  
+  // India - Asia/Kolkata
+  const indiaTime = now.toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour12: true });
+  document.getElementById('india-time').textContent = indiaTime;
+}
+
+updateTime();
+setInterval(updateTime, 1000);
+</script>
+{% endblock %}

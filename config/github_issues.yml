@@ -1,0 +1,157 @@
+# GitHub Issues Configuration - Production
+# Configuration for fetching GitHub issues and generating MkDocs documentation
+
+# GitHub Organization Settings
+github:
+  # The GitHub organization name to fetch issues from
+  organization: "Simtestlab"
+  
+  # GitHub Personal Access Token
+  # Set via environment variable: GITHUB_TOKEN
+  # Create token at: https://github.com/settings/tokens
+  # Required scopes: repo (for private repos) or public_repo (for public repos)
+  token: "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"
+  
+  # Base API URL (usually don't change this)
+  api_url: "https://api.github.com"
+
+# Output Configuration
+output:
+  # Base directory for generated markdown files (relative to docs_dir)
+  base_dir: "github_issues"
+  
+  # Directory structure options
+  structure:
+    # Create subdirectories by repository name
+    by_repository: true
+    # Create subdirectories by issue state (open/closed)
+    by_state: false
+    # Create subdirectories by labels
+    by_labels: false
+
+# Repository Filtering
+repositories:
+  # List of repositories to exclude (optional)
+  exclude: []
+  
+  # List of repositories to include (if empty, includes all)
+  # Leave empty to fetch from all repositories in the organization
+  include: []
+  
+  # Include private repositories (set to true for testing atlas)
+  include_private: true
+  
+  # Include archived repositories (set to false for testing)
+  include_archived: true
+  
+  # Excel configuration for repository list
+  excel:
+    # Path to Excel/CSV file containing repository names
+    # Leave empty to fetch from all repositories in the organization
+    # Set to "config/repositories.csv" to use the CSV file with selected repositories
+    file_path: "config/repositories.csv"
+    
+    # Sheet name containing the repository list (ignored for CSV)
+    sheet_name: "Sheet1"
+    
+    # Column name containing repository names
+    repo_column: "Repository"
+
+# Issue Filtering - LIMITED FOR TESTING
+issues:
+  # Filter by issue state: "open", "closed", "all"
+  state: "all"
+  
+  # Filter by labels (optional, empty list means no filter)
+  labels: []
+  
+  # Filter by assignee (optional, empty string means no filter)
+  assignee: ""
+  
+  # Filter by creator (optional, empty string means no filter)
+  creator: ""
+  
+  # Filter by milestone (optional, empty string means no filter)
+  milestone: ""
+  
+  # Maximum number of issues per repository (LIMITED FOR TESTING)
+  max_issues_per_repo: 5
+  
+  # Date range for issues (optional)
+  date_range:
+    # Issues created after this date (ISO format: YYYY-MM-DD)
+    since: "2024-01-01"
+    # Issues created before this date (ISO format: YYYY-MM-DD)
+    until: ""
+
+# Content Generation
+content:
+  # Include issue body/description in the markdown
+  include_body: true
+  
+  # Include issue comments (disabled for testing)
+  include_comments: false
+  
+  # Maximum length of issue body to include (limited for testing)
+  max_body_length: 1000
+  
+  # Include issue metadata (labels, assignees, etc.)
+  include_metadata: true
+  
+  # Include links back to GitHub
+  include_github_links: true
+  
+  # Template for issue filename (supports: {number}, {title}, {repo}, {state})
+  filename_template: "{number}_{title}"
+  
+  # Maximum filename length
+  max_filename_length: 80
+
+# MkDocs Integration
+mkdocs:
+  # Automatically update mkdocs.yml navigation
+  auto_update_nav: true
+  
+  # Navigation section title for GitHub Issues
+  nav_title: "GitHub Issues"
+  
+  # Position in navigation (null means append at end)
+  nav_position: null
+  
+  # Generate overview/index files
+  generate_overview: true
+  
+  # Generate repository index files
+  generate_repo_index: true
+
+# Logging Configuration
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: "DEBUG"
+  
+  # Log file path (optional, logs to console if empty)
+  file: ""
+  
+  # Include timestamps in logs
+  include_timestamp: true
+
+# Processing Configuration
+processing:
+  # Maximum number of worker threads for concurrent processing
+  max_workers: 1
+
+# Rate Limiting and Performance
+performance:
+  # Delay between API requests (seconds)
+  request_delay: 2.0
+  
+  # Maximum number of concurrent requests
+  max_concurrent_requests: 5
+  
+  # Request timeout (seconds)
+  request_timeout: 30
+  
+  # Retry configuration
+  retry:
+    max_attempts: 3
+    backoff_factor: 2

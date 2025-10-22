@@ -1,9 +1,9 @@
-name: Mirror Atlas Repo to Private Repo v2
+name: Mirror Atlas Repo to Private Repo v2 (DISABLED)
 
+# DISABLED: Only using EC2 deployment now
+# Changed to manual trigger only to avoid automatic runs
 on:
-  push:
-    branches:
-      - mkdocs-enabled-submodules-added   # only trigger on this branch
+  workflow_dispatch:  # Manual trigger only
 
 jobs:
   mirror:

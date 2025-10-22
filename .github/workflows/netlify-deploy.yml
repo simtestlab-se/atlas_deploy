@@ -1,12 +1,9 @@
-name: Netlify Deployment
+name: Netlify Deployment (DISABLED)
 
+# DISABLED: Only using EC2 deployment now
+# Changed to manual trigger only to avoid automatic runs
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:  # Manual trigger only
 
 jobs:
   build-and-deploy:
