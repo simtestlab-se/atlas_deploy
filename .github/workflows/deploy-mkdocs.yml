@@ -2,84 +2,31 @@ name: Deploy MkDocs to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main ]    # Change to 'master' if needed
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    name: Build MkDocs and deploy to GitHub Pages
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: recursive
-          fetch-depth: 0
-          persist-credentials: true
+          submodules: recursive    # since you have .gitmodules
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: '3.x'
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install mkdocs mkdocs-material
 
-      - name: Build MkDocs site
-        run: mkdocs build --site-dir site --clean
-
-      - name: Verify build output
-        run: |
-          if [ ! -f site/index.html ]; then
-            echo "ERROR: site/index.html not found";
-            ls -la site || true;
-            exit 1;
-          fi
-          ls -la site/index.html
-      - name: Setup checkout for push
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-          fetch-depth: 0
-
-      - name: Deploy to gh-pages branch (peaceiris)
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
-          publish_branch: gh-pages
-          user_name: 'github-actions[bot]'
-          user_email: '41898282+github-actions[bot]@users.noreply.github.com'
-
-      - name: Confirm gh-pages branch exists on remote
-        run: |
-          echo "Remote gh-pages refs:";
-          git ls-remote origin refs/heads/gh-pages || true
-
-      - name: Query GitHub Pages API for site status and URL
+      - name: Build and Deploy to GitHub Pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "Pages API response for ${GITHUB_REPOSITORY}:";
-          curl -s -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages" | python -m json.tool || true
-
-      - name: HEAD request to Pages site (if available)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Try to read html_url from Pages API and run a HEAD request
-          html_url=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages" | python -c "import sys, json; d=json.load(sys.stdin); print(d.get('html_url',''))") || true
-          if [ -z "$html_url" ]; then
-            echo "No html_url returned from Pages API; skipping HTTP check.";
-            exit 0;
-          fi
-          echo "Checking $html_url";
-          curl -s -I "$html_url" | sed -n '1,20p' || true
+          mkdocs gh-deploy --force
