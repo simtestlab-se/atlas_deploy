@@ -6,23 +6,20 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 🧩 Step 1: Checkout the repository (including submodules)
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      # 🐍 Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
-      # 📦 Step 3: Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -31,18 +28,16 @@ jobs:
                       mkdocs-git-revision-date-localized-plugin \
                       mkdocs-git-authors-plugin mkdocs-puml mkdocs-charts-plugin
 
-      # 🏗️ Step 4: Build MkDocs site (to ensure it compiles)
       - name: Build MkDocs site
         run: |
           echo "Building MkDocs documentation..."
           mkdocs build --verbose
 
-      # 🚀 Step 5: Deploy to GitHub Pages using personal token
       - name: Deploy to GitHub Pages
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          GH_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         run: |
           echo "Deploying to GitHub Pages..."
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          mkdocs gh-deploy --force --verbose
+          mkdocs gh-deploy --force --remote-branch gh-pages --remote-name origin
